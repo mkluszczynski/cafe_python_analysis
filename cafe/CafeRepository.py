@@ -5,14 +5,14 @@ import csv
 
 class CafeRepository:
 
-    _csvFileReader: csv.reader
-    _columns: list
-    _data: list = []
+    __csvFileReader: csv.reader
+    __columns: list
+    __data: list = []
 
     def __init__(self, data_file: TextIOWrapper) -> None:
-        self._csvFileReader = csv.reader(data_file)
-        self._getColumns()
-        self._mapData()
+        self.__csvFileReader = csv.reader(data_file)
+        self.__getColumns()
+        self.__mapData()
 
     # select: name, where 
     def find(self, find_options = {}):
@@ -20,14 +20,14 @@ class CafeRepository:
         whereRes = []
 
         if find_options.get("where"):
-            res = self._processWhere(find_options["where"]) 
+            res = self.__processWhere(find_options["where"]) 
 
         else:
-            res = self._data
+            res = self.__data
             
 
         if find_options.get('select'):
-            res = self._processSelect(res , find_options["select"]) 
+            res = self.__processSelect(res , find_options["select"]) 
         
         return res 
 
@@ -50,9 +50,9 @@ class CafeRepository:
         
         return cafe_count
 
-    def _processWhere(self, where_options) -> list:
+    def __processWhere(self, where_options) -> list:
         resWhereItem = []
-        for row in self._data:
+        for row in self.__data:
                 for where in where_options:
                     for key in where.keys():
                         if where[key] == row[key]:
@@ -60,7 +60,7 @@ class CafeRepository:
         
         return resWhereItem
 
-    def _processSelect(self, list_to_select, select_options) -> list:
+    def __processSelect(self, list_to_select, select_options) -> list:
         resSelectList = []
         for row in list_to_select:
                 resItemDist = {}
@@ -71,16 +71,16 @@ class CafeRepository:
         
         return resSelectList
 
-    def _getColumns(self) -> list:
-        self._columns = self._csvFileReader.__next__()
+    def __getColumns(self) -> list:
+        self.__columns = self.__csvFileReader.__next__()
 
-    def _mapData(self) -> None:
-        for index, row in enumerate(self._csvFileReader):
+    def __mapData(self) -> None:
+        for index, row in enumerate(self.__csvFileReader):
             if index == 0:
                 continue
             
             dataRowDict = {}
-            for i, column in enumerate(self._columns):
+            for i, column in enumerate(self.__columns):
                 dataRowDict[column] = row[i]
 
-            self._data.append(dataRowDict)
+            self.__data.append(dataRowDict)

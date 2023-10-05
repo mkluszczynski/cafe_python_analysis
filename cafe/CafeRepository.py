@@ -35,6 +35,21 @@ class CafeRepository:
     def findBy(self, findby_options):
         return self.find({"where": findby_options}) 
 
+    def countColumn(self, column) -> list:
+        cafe_data = self.find({"select": [column]})
+        cafe_set = set(map(lambda data: data[column], cafe_data))
+
+        cafe_count = []
+        for value in cafe_set:
+            count = 0
+            for cafe_value in cafe_data:
+                if cafe_value[column] == value:
+                    count += 1
+            
+            cafe_count.append({column: value, "count": count})
+        
+        return cafe_count
+
     def _processWhere(self, where_options) -> list:
         resWhereItem = []
         for row in self._data:

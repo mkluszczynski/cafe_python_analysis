@@ -26,6 +26,7 @@ class CafeService:
         ]
         paymentList = []
         for payment in paymentMethodsColumns:
-            paymentList.append({payment: self.__cafeRepo.countColumn(payment)})
+            mappedData = list(map(lambda column: {column[payment]: column["count"]},self.__cafeRepo.countColumn(payment)))
+            paymentList.append({payment: mappedData})
 
         return paymentList

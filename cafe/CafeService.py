@@ -15,3 +15,17 @@ class CafeService:
 
     def getSmokeCount(self):
         return self.__cafeRepo.countColumn("smoking")
+
+    def getPaymentMethods(self):
+        paymentMethodsColumns = [
+            "payment:cash",
+            "payment:credit_cards",
+            "payment:debit_cards",
+            "payment:cryptocurrencies",
+            "payment:apple_pay",
+        ]
+        paymentList = []
+        for payment in paymentMethodsColumns:
+            paymentList.append({payment: self.__cafeRepo.countColumn(payment)})
+
+        return paymentList
